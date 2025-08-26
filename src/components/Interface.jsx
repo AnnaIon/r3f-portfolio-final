@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { currentProjectAtom, projects } from "./Projects";
+import emailjs from "@emailjs/browser";
+import React, { useRef, useState } from "react";
 
 const Section = (props) => {
   const { children } = props;
@@ -48,7 +50,7 @@ const AboutSection = (props) => {
       <h1 className="text-6xl font-extrabold leading-snug">
         Hi, I'm
         <br />
-        <span className="bg-white px-1 italic">Wawa Sensei</span>
+        <span className="bg-white px-1 italic">Ion Ana</span>
       </h1>
       <motion.p
         className="text-lg text-gray-600 mt-4"
@@ -65,14 +67,14 @@ const AboutSection = (props) => {
           delay: 1.5,
         }}
       >
-        I make YouTube videos to help developers
+        I'm a Full-Stack Developer
         <br />
-        learn how to build 3D apps
+        passionate about turning ideas into modern web apps.
       </motion.p>
       <motion.button
         onClick={() => setSection(3)}
-        className={`bg-indigo-600 text-white py-4 px-8 
-      rounded-lg font-bold text-lg mt-16`}
+        className={`bg-blue-900 text-white py-4 px-8 
+    rounded-lg font-bold text-lg mt-16`}
         initial={{
           opacity: 0,
           y: 25,
@@ -94,37 +96,37 @@ const AboutSection = (props) => {
 
 const skills = [
   {
-    title: "Threejs / React Three Fiber",
-    level: 80,
-  },
-  {
-    title: "React / React Native",
-    level: 90,
-  },
-  {
-    title: "Nodejs",
-    level: 90,
-  },
-  {
-    title: "Typescript",
+    title: "JS / React ",
     level: 60,
   },
   {
-    title: "3D Modeling",
-    level: 40,
+    title: "Nodejs",
+    level: 60,
+  },
+  {
+    title: "Threejs / React Three Fiber",
+    level: 50,
+  },
+  {
+    title: "Typescript",
+    level: 30,
+  },
+  {
+    title: "TensorFlow.js / AI",
+    level: 20,
   },
 ];
 const languages = [
   {
-    title: "🇫🇷 French",
+    title: "🇺🇸 English",
     level: 100,
   },
   {
-    title: "🇺🇸 English",
-    level: 80,
+    title: "🇮🇹 Italian",
+    level: 50,
   },
   {
-    title: "🇯🇵 Japanese",
+    title: "🇩🇪 German",
     level: 20,
   },
 ];
@@ -156,7 +158,7 @@ const SkillsSection = () => {
               </motion.h3>
               <div className="h-2 w-full bg-gray-200 rounded-full mt-2">
                 <motion.div
-                  className="h-full bg-indigo-500 rounded-full "
+                  className="h-full bg-blue-500 rounded-full "
                   style={{ width: `${skill.level}%` }}
                   initial={{
                     scaleX: 0,
@@ -238,8 +240,13 @@ const ProjectsSection = () => {
   };
 
   return (
-    <Section>
-      <div className="flex w-full h-full gap-8 items-center justify-center">
+    <motion.section
+      className={`
+    h-screen w-screen p-8 max-w-screen-2xl mx-auto
+    flex flex-col items-start justify-start
+  `}
+    >
+      <div className="pt-40 flex w-full gap-8 items-center justify-center">
         <button
           className="hover:text-indigo-600 transition-colors"
           onClick={previousProject}
@@ -254,16 +261,40 @@ const ProjectsSection = () => {
           Next →
         </button>
       </div>
-    </Section>
+    </motion.section>
   );
 };
 
 const ContactSection = () => {
+  const form = useRef();
+  const [success, setSuccess] = useState("");
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_eamchru", // your Gmail Service ID
+        "template_0b6488g", // your EmailJS template ID
+        form.current,
+        "6297Y9aBb4Qwy0gwH" // EmailJS public key
+      )
+      .then(
+        () => {
+          setSuccess("Message sent successfully!");
+          form.current.reset();
+        },
+        () => {
+          setSuccess("Failed to send message. Try again.");
+        }
+      );
+  };
+
   return (
     <Section>
       <h2 className="text-5xl font-bold">Contact me</h2>
       <div className="mt-8 p-8 rounded-md bg-white w-96 max-w-full">
-        <form>
+        <form ref={form} onSubmit={sendEmail}>
           <label for="name" className="font-medium text-gray-900 block mb-1">
             Name
           </label>
@@ -271,7 +302,7 @@ const ContactSection = () => {
             type="text"
             name="name"
             id="name"
-            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
+            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 p-3"
           />
           <label
             for="email"
@@ -283,7 +314,7 @@ const ContactSection = () => {
             type="email"
             name="email"
             id="email"
-            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
+            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 p-3"
           />
           <label
             for="email"
@@ -294,13 +325,16 @@ const ContactSection = () => {
           <textarea
             name="message"
             id="message"
-            className="h-32 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
+            className="h-32 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 p-3"
           />
-          <button className="bg-indigo-600 text-white py-4 px-8 rounded-lg font-bold text-lg mt-16 ">
+          <button className="bg-blue-900 text-white py-4 px-8 rounded-lg font-bold text-lg mt-16">
             Submit
           </button>
+          {success && <p className="mt-4 text-green-600">{success}</p>}
         </form>
       </div>
     </Section>
   );
 };
+
+export default ContactSection;

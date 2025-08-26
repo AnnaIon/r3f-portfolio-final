@@ -72,6 +72,7 @@ export const Experience = (props) => {
   return (
     <>
       <Background />
+      {/* Only render Avatar if NOT in Projects section (section 2) */}
       <motion.group
         position={[1.9072935059634513, 0.14400000000000002, 2.681801948466054]}
         rotation={[-3.141592653589793, 1.2053981633974482, 3.141592653589793]}
@@ -93,13 +94,9 @@ export const Experience = (props) => {
             rotateY: 0,
             rotateZ: 0,
           },
-          2: {
-            x: -2,
-            y: -viewport.height * 2 + 0.5,
-            z: 0,
-            rotateX: 0,
-            rotateY: Math.PI / 2,
-            rotateZ: 0,
+          2:  {
+            opacity: 0,  // 👈 hides it
+            scale: 0,    // 👈 makes sure it disappears
           },
           3: {
             y: -viewport.height * 3 + 1,

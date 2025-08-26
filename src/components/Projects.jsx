@@ -8,34 +8,32 @@ import { useEffect, useRef } from "react";
 
 export const projects = [
   {
-    title: "Wawatmos",
-    url: "https://r3f-wawatmos-final.vercel.app/",
-    image: "projects/wawatmos.jpg",
-    description: "Recreating the Atmos Awwwards website with React Three Fiber",
+    title: "Enviroment Site",
+    url: "https://environmentsolutions.ro",
+    image: "projects/enviroment.jpeg",
+    description:
+      "Developed a responsive business website for Environment Solutions, featuring a modern UI, optimized performance, and a clean presentation of services.",
   },
   {
-    title: "Portfolio Baking",
-    url: "https://www.youtube.com/watch?v=YkHqpqJgLKw",
-    image: "projects/baking.jpg",
-    description: "Learn how to bake a 3D model with Blender and use it in r3f",
+    title: "Restaurant Website ",
+    url: "https://lafratirestaurant.com",
+    image: "projects/fastfood.jpeg",
+    description:
+      "Built a fully responsive front-end website for a fast-food restaurant with React, Vite, and Tailwind CSS, including image galleries and smooth animations.",
   },
   {
-    title: "3D Avatar",
-    url: "https://www.youtube.com/watch?v=pGMKIyALcK0",
-    image: "projects/avatar.jpg",
-    description: "Learn how to use ReadyPlayerMe to create a 3D avatar",
+    title: "Booking Platform ",
+    url: "https://nailsbykarina.com",
+    image: "projects/nails.jpeg", // (fixed extension)
+    description:
+      "Created a full-stack booking platform for a nail salon with React, Node.js, and MongoDB. Implemented appointment scheduling, authentication, and admin management.",
   },
   {
-    title: "Kanagame",
-    url: "https://www.youtube.com/watch?v=zwNF1-lsia8",
-    image: "projects/kanagame.jpg",
-    description: "Use React Three Fiber to create a 3D game",
-  },
-  {
-    title: "Loader",
-    url: "https://www.youtube.com/watch?v=L12wIvuZTOY",
-    image: "projects/loader.jpg",
-    description: "Create a loading screen for your r3f projects",
+    title: "Full-Stack Rent App",
+    url: "https://github.com/AnnaIon/rentApp_Fullstack",
+    image: "projects/rentapp.jpeg",
+    description:
+      "Developed a full-stack MERN application for apartment rentals. Features include user authentication, favorites, chat system, admin dashboard, and property management.",
   },
 ];
 
@@ -50,7 +48,8 @@ const Project = (props) => {
   }, [highlighted]);
 
   useFrame(() => {
-    background.current.material.opacity = bgOpacity.get();
+    if (background.current)
+      background.current.material.opacity = bgOpacity.get();
   });
 
   return (
@@ -60,30 +59,34 @@ const Project = (props) => {
         onClick={() => window.open(project.url, "_blank")}
         ref={background}
       >
-        <planeGeometry args={[2.2, 2]} />
+        {/* Bigger container */}
+        <planeGeometry args={[4, 5]} />
         <meshBasicMaterial color="black" transparent opacity={0.4} />
       </mesh>
+
+      {/* Bigger image */}
       <Image
-        scale={[2, 1.2, 1]}
+        scale={[3, 1.8, 1]}
         url={project.image}
         toneMapped={false}
-        position-y={0.3}
+        position-y={0.5}
       />
+
       <Text
-        maxWidth={2}
-        anchorX={"left"}
-        anchorY={"top"}
-        fontSize={0.2}
-        position={[-1, -0.4, 0]}
+        maxWidth={3.2} // slightly wider than image width
+        anchorX="center"
+        anchorY="center"
+        fontSize={0.3}
+        position={[0, -0.8, 0]}
       >
         {project.title.toUpperCase()}
       </Text>
       <Text
-        maxWidth={2}
-        anchorX="left"
-        anchorY="top"
-        fontSize={0.1}
-        position={[-1, -0.6, 0]}
+        maxWidth={3.2}
+        anchorX="center"
+        anchorY="top" // so text starts below the title
+        fontSize={0.15}
+        position={[0, -1.1, 0.1]} // slightly adjusted
       >
         {project.description}
       </Text>
@@ -91,29 +94,33 @@ const Project = (props) => {
   );
 };
 
-export const currentProjectAtom = atom(Math.floor(projects.length / 2));
+export const currentProjectAtom = atom(0);
 
 export const Projects = () => {
   const { viewport } = useThree();
   const [currentProject] = useAtom(currentProjectAtom);
 
+  const gap = 4.5;
+
   return (
-    <group position-y={-viewport.height * 2 + 1}>
-      {projects.map((project, index) => (
-        <motion.group
-          key={"project_" + index}
-          position={[index * 2.5, 0, -3]}
-          animate={{
-            x: 0 + (index - currentProject) * 2.5,
-            y: currentProject === index ? 0 : -0.1,
-            z: currentProject === index ? -2 : -3,
-            rotateX: currentProject === index ? 0 : -Math.PI / 3,
-            rotateZ: currentProject === index ? 0 : -0.1 * Math.PI,
-          }}
-        >
-          <Project project={project} highlighted={index === currentProject} />
-        </motion.group>
-      ))}
+    <group position-y={-viewport.height * 2 - 1.1}>
+      {projects.map((project, index) => {
+        const offset = index - currentProject; // relative position to highlighted project
+        return (
+          <motion.group
+            key={"project_" + index}
+            position={[offset * gap, 0, offset === 0 ? 0 : -1]} // z = 0 for main, -1 for others
+            animate={{
+              x: offset * gap,
+              y: 0,
+              z: offset === 0 ? 0 : -1,
+            }}
+          >
+            <Project project={project} highlighted={offset === 0} />
+          </motion.group>
+        );
+      })}
     </group>
   );
 };
+
