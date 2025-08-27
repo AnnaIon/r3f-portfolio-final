@@ -30,7 +30,7 @@ export const projects = [
   },
   {
     title: "Full-Stack Rent App",
-    url: "https://github.com/AnnaIon/rentApp_Fullstack",
+    url: "https://rentappcourse.netlify.app",
     image: "projects/rentapp.jpeg",
     description:
       "Developed a full-stack MERN application for apartment rentals. Features include user authentication, favorites, chat system, admin dashboard, and property management.",
