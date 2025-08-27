@@ -13,11 +13,14 @@ import { Avatar } from "./Avatar";
 import { Background } from "./Background";
 import { Office } from "./Office";
 import { Projects } from "./Projects";
+import { useIsSmallDevice } from "./SmallDevices";
+import * as THREE from "three";
 
 export const Experience = (props) => {
   const { menuOpened } = props;
   const { viewport } = useThree();
   const data = useScroll();
+  const isSmall = useIsSmallDevice();
 
   const [section, setSection] = useState(0);
 
@@ -55,18 +58,10 @@ export const Experience = (props) => {
     }
 
     state.camera.position.x = cameraPositionX.get();
-    state.camera.lookAt(cameraLookAtX.get(), 0, 0);
+    const target = new THREE.Vector3(cameraLookAtX.get(), 0, 0);
+    state.camera.lookAt(target);
 
-    // const position = new THREE.Vector3();
-    // characterContainerAboutRef.current.getWorldPosition(position);
-    // console.log([position.x, position.y, position.z]);
 
-    // const quaternion = new THREE.Quaternion();
-    // characterContainerAboutRef.current.getWorldQuaternion(quaternion);
-    // const euler = new THREE.Euler();
-    // euler.setFromQuaternion(quaternion, "XYZ");
-
-    // console.log([euler.x, euler.y, euler.z]);
   });
 
   return (
@@ -94,9 +89,9 @@ export const Experience = (props) => {
             rotateY: 0,
             rotateZ: 0,
           },
-          2:  {
-            opacity: 0,  // 👈 hides it
-            scale: 0,    // 👈 makes sure it disappears
+          2: {
+            opacity: 0, // 👈 hides it
+            scale: 0, // 👈 makes sure it disappears
           },
           3: {
             y: -viewport.height * 3 + 1,

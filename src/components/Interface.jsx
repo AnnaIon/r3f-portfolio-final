@@ -3,6 +3,8 @@ import { useAtom } from "jotai";
 import { currentProjectAtom, projects } from "./Projects";
 import emailjs from "@emailjs/browser";
 import React, { useRef, useState } from "react";
+import { useIsSmallDevice } from "./SmallDevices";
+import { Office } from "./Office";
 
 const Section = (props) => {
   const { children } = props;
@@ -53,7 +55,7 @@ const AboutSection = (props) => {
         <span className="bg-white px-1 italic"> Ana Ion</span>
       </h1>
       <motion.p
-        className="text-lg text-gray-600 mt-4"
+        className="text-lg text-white md:text-gray-600 mt-4"
         initial={{
           opacity: 0,
           y: 25,
@@ -71,6 +73,7 @@ const AboutSection = (props) => {
         <br />
         passionate about turning ideas into modern web apps.
       </motion.p>
+
       <motion.button
         onClick={() => setSection(3)}
         className={`bg-blue-900 text-white py-4 px-8 
@@ -295,7 +298,10 @@ const ContactSection = () => {
       <h2 className="text-5xl font-bold">Contact me</h2>
       <div className="mt-8 p-8 rounded-md bg-white w-96 max-w-full">
         <form ref={form} onSubmit={sendEmail}>
-          <label for="name" className="font-medium text-gray-900 block mb-1">
+          <label
+            htmlFor="name"
+            className="font-medium text-gray-900 block mb-1"
+          >
             Name
           </label>
           <input
@@ -305,7 +311,7 @@ const ContactSection = () => {
             className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 p-3"
           />
           <label
-            for="email"
+            htmlFor="email"
             className="font-medium text-gray-900 block mb-1 mt-8"
           >
             Email
@@ -317,7 +323,7 @@ const ContactSection = () => {
             className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 p-3"
           />
           <label
-            for="email"
+            htmlFor="email"
             className="font-medium text-gray-900 block mb-1 mt-8"
           >
             Message
